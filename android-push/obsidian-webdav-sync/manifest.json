@@ -1,0 +1,9 @@
+{
+  "id": "obsidian-webdav-sync",
+  "name": "WebDAV Sync",
+  "version": "1.4.2",
+  "minAppVersion": "0.15.0",
+  "description": "私有 WebDAV 双向同步（桌面端 + 移动端），支持增量同步、SHA-256 哈希校验与冲突自动处理。",
+  "author": "obsidian-webdav-sync",
+  "isDesktopOnly": false
+}

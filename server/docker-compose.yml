@@ -1,0 +1,40 @@
+# docker-compose.yml — Obsidian WebDAV 同步服务编排（默认 HTTPS）
+#
+# 使用说明：
+#   1. 复制 .env.example 为 .env 并填写账号密码（或运行 deploy.sh 自动生成）
+#   2. 执行：docker compose up -d --build
+#   3. 访问地址：
+#        - 桌面端（HTTPS）: https://<服务器IP>:8080/
+#        - 安卓端（明文）: http://<服务器IP>:8081/   ← Android 不信任用户安装的证书，故单独开一个明文端口
+#
+# 数据持久化：宿主机 ./data 目录映射为容器内 /data
+# 认证：通过环境变量 WEBDAV_USER / WEBDAV_PASS 在容器启动时自动生成 htpasswd
+# HTTPS：容器启动时若 ./ssl 下无证书，会自动生成自签名证书（加密传输，客户端需信任）
+# 明文端口：8081 供安卓端使用（Android 不信任用户安装的证书），不需要可删掉对应映射
+# 重启策略：always（服务器重启后自动拉起）
+
+services:
+  webdav:
+    build: .
+    container_name: obsidian-webdav
+    restart: always
+    ports:
+      - "8080:8080"     # HTTPS（桌面端用，自签名证书）
+      - "8081:8081"     # HTTP 明文（安卓端用，见 nginx.conf 里的说明；不需要可删掉本行）
+    volumes:
+      - ./data:/data
+      # TLS 证书目录（读写挂载）：首次启动容器会自动生成自签名证书；
+      # 要换成受信任证书，把 fullchain.pem / privkey.pem 放这里并重启即可（容器不会覆盖已有证书）
+      - ./ssl:/etc/nginx/ssl
+    environment:
+      - TZ=Asia/Shanghai
+      # 账号密码（在 .env 中设置）
+      - WEBDAV_USER=${WEBDAV_USER:-obsidian}
+      - WEBDAV_PASS=${WEBDAV_PASS:-changeme123}
+      # 自签名证书的 SAN 里要写入的服务器公网 IP（用 IP 直连时必须提供，否则客户端证书校验会失败）
+      - TLS_SAN_IP=${TLS_SAN_IP:-}
+    # 资源限制（可选，最小配置即可运行）
+    deploy:
+      resources:
+        limits:
+          memory: 256M

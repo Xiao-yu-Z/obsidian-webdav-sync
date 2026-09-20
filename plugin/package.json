@@ -1,0 +1,19 @@
+{
+  "name": "obsidian-webdav-sync",
+  "version": "1.0.0",
+  "description": "Private WebDAV sync plugin for Obsidian (desktop + mobile)",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "node esbuild.config.mjs production",
+    "test": "echo \"no test\""
+  },
+  "keywords": ["obsidian", "webdav", "sync", "private"],
+  "author": "obsidian-webdav-sync",
+  "license": "MIT",
+  "devDependencies": {
+    "builtin-modules": "^3.3.0",
+    "esbuild": "^0.21.5",
+    "obsidian": "^1.7.2"
+  }
+}

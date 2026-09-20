@@ -1,0 +1,53 @@
+/* styles.css — 设置面板与状态栏样式优化 */
+
+.wbav-statusbar {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0.85;
+}
+.wbav-statusbar:hover {
+  opacity: 1;
+}
+.wbav-statusbar .wbav-icon {
+  display: inline-flex;
+}
+.wbav-statusbar .wbav-text {
+  font-size: var(--font-ui-smaller);
+}
+
+/* 设置页提示文字 */
+.wbav-hint {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  line-height: 1.5;
+}
+
+/* 左侧边栏（功能区）同步按钮 */
+.wbav-ribbon {
+  cursor: pointer;
+}
+/* 同步中：图标持续旋转，给出「正在进行」的视觉反馈 */
+.wbav-ribbon.wbav-spin svg {
+  animation: wbav-rotate 1.1s linear infinite;
+}
+@keyframes wbav-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* 尊重系统「减少动态效果」设置 */
+@media (prefers-reduced-motion: reduce) {
+  .wbav-ribbon.wbav-spin svg {
+    animation: none;
+  }
+}
+
+/* 让忽略规则文本框更整洁 */
+.setting-item textarea {
+  resize: vertical;
+}
